@@ -29,6 +29,9 @@
 body {
 	padding-top: 60px;
 	padding-bottom: 40px;
+	background-image: url('${resources}/tumbler.jpg');
+	background-repeat: no-repeat;
+	background-position: right bottom;
 }
 </style>
 </head>
@@ -40,7 +43,7 @@ body {
 				<a class="btn btn-navbar" data-toggle="collapse"
 					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
 					class="icon-bar"></span> <span class="icon-bar"></span>
-				</a> <a class="brand" href="./index.html">Tumbler</a>
+				</a> <a class="brand" style="color: white;" href="./index.html">Tumbler</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li class="active"><a href="./index.html">Table of
@@ -51,27 +54,21 @@ body {
 							data-toggle="dropdown" href="#menu1"> Report <b class="caret"></b>
 						</a>
 							<ul class="dropdown-menu">
-							<li class="active"><a href="#fat">Passed</a></li>
-								<#list stories as story>
-								<#if story.status() == "PASSED">
+								<li class="active"><a href="#fat">Passed</a></li> <#list stories
+								as story> <#if story.status() == "PASSED">
 								<li><a href="#${story.camelisedName()}">${story.name()}</a></li>
-								</#if>
-								</#list>
+								</#if> </#list>
 								<li class="divider"></li>
-								<li class="active"><a href="#fat">Failed</a></li>
-								<#list stories as story>
-								<#if story.status() == "FAILED">
+								<li class="active"><a href="#fat">Failed</a></li> <#list stories
+								as story> <#if story.status() == "FAILED">
 								<li><a href="#${story.camelisedName()}">${story.name()}</a></li>
-								</#if>
-								</#list>
+								</#if> </#list>
 								<li class="divider"></li>
-								<li class="active"><a href="#fat">Pending</a></li>
-								<#list stories as story>
-								<#if story.status() == "PENDING">
+								<li class="active"><a href="#fat">Pending</a></li> <#list
+								stories as story> <#if story.status() == "PENDING">
 								<li><a href="#${story.camelisedName()}">${story.name()}</a></li>
-								</#if>
-								</#list>
-								
+								</#if> </#list>
+
 							</ul></li>
 					</ul>
 				</div>
@@ -79,70 +76,52 @@ body {
 		</div>
 	</div>
 	<script type="text/javascript">
-	$('.dropdown-toggle').dropdown()
+		$('.dropdown-toggle').dropdown()
 	</script>
 	<div class="container" id="runsummary">
-		<div class="row">
-			<div class="span3">
-				<h2>Type</h2>
-			</div>
-			<div class="span3" style="text-align: center">
-				<img src="${resources}/PASSED.png" alt="PASSED" title="PASSED" />
-			</div>
-			<div class="span3" style="text-align: center">
-				<img src="${resources}/FAILED.png" alt="FAILED" title="FAILED" />
-			</div>
-			<div class="span3" style="text-align: center">
-				<img src="${resources}/PENDING.png" alt="PENDING" title="PENDING" />
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="span3">
-				<h3>Stories:</h3>
-			</div>
-			<div class="span3" style="text-align: center">
-				<h3>${runStoryStatistics.passed()}</h3>
-			</div>
-			<div class="span3" style="text-align: center">
-				<h3>${runStoryStatistics.failed()}</h3>
-			</div>
-			<div class="span3" style="text-align: center">
-				<h3>${runStoryStatistics.pending()}</h3>
-			</div>
-		</div>
-		<div class="row">
-			<div class="span3">
-				<h3>Scenarios:</h3>
-			</div>
-			<div class="span3" style="text-align: center">
-				<h3>${runScenarioStatistics.passed()}</h3>
-			</div>
-			<div class="span3" style="text-align: center">
-				<h3>${runScenarioStatistics.failed()}</h3>
-			</div>
-			<div class="span3" style="text-align: center">
-				<h3>${runScenarioStatistics.pending()}</h3>
-			</div>
-		</div>
-
+		<table class="table">
+			<thead>
+				<td></td>
+				<td style="text-align: center"><img
+					src="${resources}/PASSED.png" alt="PASSED" title="PASSED" /></td>
+				<td style="text-align: center"><img
+					src="${resources}/FAILED.png" alt="FAILED" title="FAILED" /></td>
+				<td style="text-align: center"><img
+					src="${resources}/PENDING.png" alt="PENDING" title="PENDING" /></td>
+			<thead>
+				<tr>
+					<td class="">Stories:</td>
+					<td style="text-align: center">${runStoryStatistics.passed()}</td>
+					<td style="text-align: center">${runStoryStatistics.failed()}</td>
+					<td style="text-align: center">${runStoryStatistics.pending()}</td>
+				</tr>
+				<tr>
+					<td>Scenarios:</td>
+					<td style="text-align: center">${runScenarioStatistics.passed()}</td>
+					<td style="text-align: center">${runScenarioStatistics.failed()}</td>
+					<td style="text-align: center">${runScenarioStatistics.pending()}</td>
+				</tr>
+		</table>
+		<hr class="soften">
 		<div class="row" id="report">
-			<div class="span10">
-				<h2>Stories</h2>
-			</div>
-			<div class="span2">
-				<h2>Run status</h2>
+			<div class="span12">
+				<h3>Stories</h3>
 			</div>
 		</div>
 		<#list stories as story>
 		<div class="row">
-			<div class="span10" id="${story.camelisedName()}">
-				<a class="btn <#if story.status()=="PASSED">btn-success</#if><#if story.status()=="FAILED">btn-danger</#if><#if story.status()=="PENDING">btn-warning</#if>"
-					href="${story.asClassPath()}Scenarios.html">${story.name()}</a>
-			</div>
-			<div class="span2">
-				<img src="${resources}/${story.status()}.png"
-					alt="${story.status()}" title="${story.status()}" />
+			<div class="span12" id="${story.camelisedName()}" style="margin-bottom:28px;margin-left:30px">
+				<a class="btn <#if story.status()=="PASSED">btn-success</#if><#if
+					story.status()=="FAILED">btn-danger</#if><#if
+					story.status()=="PENDING">btn-warning</#if>"
+					href="${story.asClassPath()}Scenarios.html">${story.name()} <span
+					class="badge badge-success"
+					style="position: relative; right: 0em; bottom: -1.2em;">${story.runStatistics().passed()}</span>
+					<span class="badge badge-important"
+					style="position: relative; right: 0em; bottom: -1.2em;">${story.runStatistics().failed()}</span>
+					<span class="badge badge-warning"
+					style="position: relative; right: 0em; bottom: -1.2em;">${story.runStatistics().pending()}</span>
+				</a>
 			</div>
 		</div>
 		</#list>

@@ -40,10 +40,12 @@ body {
 				<a class="btn btn-navbar" data-toggle="collapse"
 					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
 					class="icon-bar"></span> <span class="icon-bar"></span>
-				</a> <a class="brand" href="#">Tumbler</a>
+				</a> <a class="brand" style="color: white;" href="#">Tumbler</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li class="active"><a href="<#list story.packageName()?split(".") as x>../</#list>index.html">Table of Contents</a></li>
+						<li class="active"><a
+							href="<#list story.packageName()?split(".") as x>../</#list>index.html">Table
+								of Contents</a></li>
 						<li class="active"><a href="#">${story.name()}</a></li>
 						<li class="active"><a href="#summary">Run summary</a></li>
 
@@ -75,41 +77,59 @@ body {
 	<div class="container">
 
 		<div id="summary" class="hero-unit">
-			<h2>Run summary</h2>
 			<div class="row">
-				<div class="span2" style="text-align: center">
-					<img src="${resources}/PASSED.png" alt="PASSED" title="PASSED" />
+				<div class="span3"
+					style="text-align: right; background-image: url('${resources}/PASSED.png'); background-repeat: no-repeat; background-position: right top;">
+					<span class="badge badge-success"
+						style="position: relative; bottom: -30px;">
+						${runStatistics.passed()} </span>
+					<div style="margin-top: 25px; text-align: left;">
+						<#list scenarios as scenario> <#if scenario.status() == "PASSED">
+						<a class="btn btn-success" href="#${scenario.name()}"
+							style="margin-top: 10px;">${scenario.name()}</a>
+						 </#if> </#list>
+					</div>
 				</div>
-				<div class="span2" style="text-align: center"></div>
-				<div class="span2" style="text-align: center">
-					<h3>${runStatistics.passed()}</h3>
-				</div>
-			</div>
-			<div class="row">
-				<div class="span2" style="text-align: center">
-					<img src="${resources}/FAILED.png" alt="FAILED" title="FAILED" />
-				</div>
-				<div class="span2" style="text-align: center">
-					<h3>${runStatistics.failed()}</h3>
-				</div>
-			</div>
-			<div class="row">
-				<div class="span2" style="text-align: center">
-					<img src="${resources}/PENDING.png" alt="PENDING" title="PENDING" />
-				</div>
-				<div class="span2" style="text-align: center">
-					<h3>${runStatistics.pending()}</h3>
-				</div>
-			</div>
 
+				<div class="span3"
+					style="text-align: right; background-image: url('${resources}/FAILED.png'); background-repeat: no-repeat; background-position: right top;">
+					<span class="badge badge-important"
+						style="position: relative; bottom: -30px;">
+						${runStatistics.failed()} </span>
+					<div style="margin-top: 25px; text-align: left;">
+						<#list scenarios as scenario> <#if scenario.status() == "FAILED">
+						<a class="btn btn-danger" href="#${scenario.name()}"
+							style="margin-top: 10px;">${scenario.name()}</a>
+						 </#if> </#list>
+					</div>
+				</div>
+
+				<div class="span3"
+					style="text-align: right; background-image: url('${resources}/PENDING.png'); background-repeat: no-repeat; background-position: right top;">
+					<span class="badge badge-warning"
+						style="position: relative; bottom: -30px;">
+						${runStatistics.pending()} </span>
+					<div style="margin-top: 25px; text-align: left;">
+						<#list scenarios as scenario> <#if scenario.status() == "PENDING">
+						<a class="btn btn-warning" href="#${scenario.name()}"
+							style="margin-top: 10px;">${scenario.name()}</a>
+						 </#if> </#list>
+					</div>
+				</div>
+
+			</div>
 		</div>
+
 		<div id="report">
 			<div class="page-header">
 				<h1>${story.name()} should:</h1>
 			</div>
 		</div>
 		<#list scenarios as scenario>
-		<div class="hero-unit" id="${scenario.name()}">
+		<div class="alert alert-<#if 
+			scenario.status() == "PASSED">success</#if><#if scenario.status() == "FAILED">error</#if><#if
+			scenario.status() == "PENDING">info</#if>" id="${scenario.name()}">
+
 			<h2>${scenario.name()}</h2>
 
 			<h3>${keywords.keyword("Given")}</h3>
@@ -118,10 +138,11 @@ body {
 			<p>${scenario.when()}</p>
 			<h3>${keywords.keyword("Then")}</h3>
 			<p>${scenario.then()}</p>
-
+			
 			<img src="${resources}/${scenario.status()}.png"
 				alt="${scenario.status()}" title="${scenario.status().details()}" />
 
+			<p>${scenario.status().details()}</p>
 
 		</div>
 		</#list>
